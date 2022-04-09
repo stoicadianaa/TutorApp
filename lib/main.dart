@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:tutor_app/screens/login_screen.dart';
+import 'package:tutor_app/screens/register_screen.dart';
 import 'package:tutor_app/screens/main_screen.dart';
 
 void main() async {
@@ -20,10 +20,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const LoginScreen(),
-      initialRoute: LoginScreen.id,
+      home: const RegisterScreen(),
+      initialRoute: RegisterScreen.id,
       routes: {
-        LoginScreen.id : (context) => LoginScreen(),
+        RegisterScreen.id : (context) => RegisterScreen(),
         MainScreen.id : (context) => MainScreen(),
       }
     );
