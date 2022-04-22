@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({Key? key}) : super(key: key);
-
+  MainScreen({this.message, this.appBarMessage});
+  final appBarMessage;
+  final message;
   static final id = 'main';
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  _MainScreenState createState() =>
+      _MainScreenState(message: message, appBarMessage: appBarMessage);
 }
 
 class _MainScreenState extends State<MainScreen> {
-
+  _MainScreenState({this.message, this.appBarMessage});
+  final appBarMessage;
+  final message;
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
 
@@ -24,12 +28,12 @@ class _MainScreenState extends State<MainScreen> {
   void getCurrentUser() async {
     try {
       final user = _auth.currentUser;
-      if(user != null) {
+      if (user != null) {
         loggedInUser = user;
         print(loggedInUser.email);
       }
     } catch (e) {
-        print(e);
+      print(e);
     }
   }
 
@@ -37,7 +41,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Registraton Succesful'),
+        title: Text('$appBarMessage Succesful'),
       ),
       body: Container(
         color: Colors.white,
@@ -45,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
           padding: const EdgeInsets.all(8.0),
           child: Center(
             child: Text(
-              'New user ${loggedInUser.email} registered!',
+              message,
               textAlign: TextAlign.center,
               style: const TextStyle(
                 fontSize: 20.0,

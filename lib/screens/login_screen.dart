@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutor_app/screens/main_screen.dart';
-import 'main_screen.dart';
 
-class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
 
-  static String id = 'register';
+  static String id = 'login';
 
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<RegisterScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
@@ -29,7 +28,7 @@ class _LoginScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Register new account'),
+        title: const Text('Login into account'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -115,15 +114,15 @@ class _LoginScreenState extends State<RegisterScreen> {
                       onPressed: () async {
                         try {
                           final newUser =
-                              await _auth.createUserWithEmailAndPassword(
+                              await _auth.signInWithEmailAndPassword(
                                   email: email, password: password);
                           if (newUser != null) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => MainScreen(
-                                        message: 'User ${email} registered!',
-                                        appBarMessage: 'Register')));
+                                        message: 'User ${email} logged in!',
+                                        appBarMessage: 'Login')));
                           }
                         } on FirebaseAuthException catch (e) {
                           ScaffoldMessenger.of(context)
@@ -133,7 +132,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                       minWidth: 200.0,
                       height: 42.0,
                       child: const Text(
-                        'Register',
+                        'Login',
                       ),
                     ),
                   ),
