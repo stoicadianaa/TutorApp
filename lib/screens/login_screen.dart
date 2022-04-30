@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutor_app/screens/main_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:tutor_app/screens/students/students_main_screen.dart';
+import 'package:tutor_app/screens/tutors/tutors_main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -15,12 +18,29 @@ class _LoginScreenState extends State<LoginScreen> {
   final _auth = FirebaseAuth.instance;
   late String email;
   late String password;
+  final firestore = FirebaseFirestore.instance;
+  String userType = 'null';
 
   SnackBar errorSnackbar(String error) {
     return SnackBar(
       behavior: SnackBarBehavior.floating,
       content: Text(error),
     );
+  }
+
+  Future findUserType() async {
+    QuerySnapshot querySnapshot = await firestore.collection("users").get();
+    for (int i = 0; i < querySnapshot.docs.length; i++) {
+      var a = querySnapshot.docs[i];
+      print(a.toString());
+      if (a["email"] == email) {
+        userType =
+          a["user-type"] != null ? a["user-type"].toString() : 'none';
+        print("usertype: $userType");
+        return;
+      }
+    }
+    print('no such email');
   }
 
   @override
@@ -116,13 +136,16 @@ class _LoginScreenState extends State<LoginScreen> {
                           final newUser =
                               await _auth.signInWithEmailAndPassword(
                                   email: email, password: password);
-                          if (newUser != null) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MainScreen(
-                                        message: 'User ${email} logged in!',
-                                        appBarMessage: 'Login')));
+                          await findUserType();
+                          print("in button: $userType");
+                          if (userType == 'teacher') {
+                            print('to teacher');
+                            Navigator.pushNamed(context, TutorsMainScreen.id);
+                          } else if (userType == 'student'){
+                            Navigator.pushNamed(context, StudentsMainScreen.id);
+                          }
+                          else {
+                            print('error');
                           }
                         } on FirebaseAuthException catch (e) {
                           ScaffoldMessenger.of(context)

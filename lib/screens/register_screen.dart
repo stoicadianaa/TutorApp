@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutor_app/screens/main_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -9,19 +10,28 @@ class RegisterScreen extends StatefulWidget {
   static String id = 'register';
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _RegisterScreenState createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<RegisterScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _auth = FirebaseAuth.instance;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
   late String email;
   late String password;
+  String userType = 'student';
 
   SnackBar errorSnackbar(String error) {
     return SnackBar(
       behavior: SnackBarBehavior.floating,
       content: Text(error),
     );
+  }
+
+  void addUser() {
+    firestore.collection("users").add({
+      "email":email,
+      "user-type":userType
+    }).then((value) => print(value.id));
   }
 
   @override
@@ -105,6 +115,34 @@ class _LoginScreenState extends State<RegisterScreen> {
                 const SizedBox(
                   height: 24.0,
                 ),
+                Column(
+                  children: [
+                    ListTile(
+                      leading: Radio<String>(
+                        value: 'student',
+                        onChanged: (value) {
+                          setState(() {
+                            userType = value!;
+                          });
+                        },
+                        groupValue: userType,
+                      ),
+                      title: const Text('Student'),
+                    ),
+                    ListTile(
+                      leading: Radio<String>(
+                        value: 'teacher',
+                        onChanged: (value) {
+                          setState(() {
+                            userType = value!;
+                          });
+                        },
+                        groupValue: userType,
+                      ),
+                      title: const Text('Teacher'),
+                    )
+                  ],
+                ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Material(
@@ -114,6 +152,7 @@ class _LoginScreenState extends State<RegisterScreen> {
                     child: MaterialButton(
                       onPressed: () async {
                         try {
+                          addUser();
                           final newUser =
                               await _auth.createUserWithEmailAndPassword(
                                   email: email, password: password);
@@ -122,8 +161,9 @@ class _LoginScreenState extends State<RegisterScreen> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => MainScreen(
-                                        message: 'User ${email} registered!',
-                                        appBarMessage: 'Register')));
+                                        message: 'User $email registered!',
+                                        appBarMessage: 'Register')
+                                ));
                           }
                         } on FirebaseAuthException catch (e) {
                           ScaffoldMessenger.of(context)
