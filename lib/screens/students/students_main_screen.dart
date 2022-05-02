@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tutor_app/screens/students/students_register_to_course.dart';
 
 
 class StudentsMainScreen extends StatefulWidget {
@@ -49,7 +50,7 @@ class _StudentsMainScreenState extends State<StudentsMainScreen> {
               children: [
                 TextButton(
                     onPressed: () {
-
+                      Navigator.pushNamed(context, RegisterToCourse.id);
                     },
                     child: const Text('Register to a new course'))
               ],
