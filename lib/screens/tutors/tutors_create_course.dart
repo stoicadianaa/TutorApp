@@ -21,9 +21,9 @@ class _CreateCourseState extends State<CreateCourse> {
   final TimeOfDay _time = const TimeOfDay(hour: 0, minute: 00);
 
   List<TimeOfDay> startTimes =
-      List.filled(0, const TimeOfDay(hour: 0, minute: 00), growable: true);
+  List.filled(0, const TimeOfDay(hour: 0, minute: 00), growable: true);
   List<TimeOfDay> endTimes =
-      List.filled(0, const TimeOfDay(hour: 0, minute: 00), growable: true);
+  List.filled(0, const TimeOfDay(hour: 0, minute: 00), growable: true);
   List<String> dayOfTheWeek = List.filled(0, 'Monday', growable: true);
 
   SnackBar errorSnackbar(String error) {
@@ -279,9 +279,9 @@ class _CreateCourseState extends State<CreateCourse> {
     ];
     return ddl
         .map((value) => DropdownMenuItem(
-              value: value,
-              child: Text(value),
-            ))
+      value: value,
+      child: Text(value),
+    ))
         .toList();
   }
 }
