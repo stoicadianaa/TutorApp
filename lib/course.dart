@@ -50,6 +50,7 @@ void getCourses() async {
           courses[currentIndex].dayOfTheWeek.add(_courses[i].data()['dayOfTheWeek']);
           courses[currentIndex].startTime.add(_courses[i].data()['startTime']);
           courses[currentIndex].endTime.add(_courses[i].data()['endTime']);
+          courseToAdd.maxNumberOfStudents.add(_courses[i].data()['maxNumberOfStudents']);
         }
       }
     }

@@ -25,6 +25,8 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
     super.initState();
   }
 
+  void addStudentToCourse() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,29 +70,37 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
                 'Available sesions:',
                 style: TextStyle(
                   fontSize: 16.0,
-                ),),
-            Container(
-              height: MediaQuery.of(context).size.height - 260,
-              child: ListView.builder(
-                  itemCount: courses[index].dayOfTheWeek.length ,
-                  //height: courses[index].dayOfTheWeek.length * 50,
-                  itemBuilder: (BuildContext context, int numberOfSesion) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Column(
-                        children: [
-                          Text('Day: every ${courses[index].dayOfTheWeek[numberOfSesion]}'),
-                          Text('Start Time: ${courses[index].startTime[numberOfSesion]} \n End Time: ${courses[index].endTime[numberOfSesion]}'),
-                          Text('Available seats: ${courses[index].maxNumberOfStudents}'),
-                          TextButton(onPressed: () {
-
-                          }, child: const Text('Register this course'))
-                        ],
-                      ),
-                    );
-                  }
                 ),
-            ),
+              ),
+              Container(
+                //height: MediaQuery.of(context).size.height - 260,
+                child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: courses[index].dayOfTheWeek.length,
+                    itemBuilder: (BuildContext context, int numberOfSesion) {
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Text(
+                                'Day: every ${courses[index].dayOfTheWeek[numberOfSesion]}'),
+                            Text(
+                                'Start Time: ${courses[index].startTime[numberOfSesion]} \n End Time: ${courses[index].endTime[numberOfSesion]}'),
+                            Text(
+                                'Available seats: ${courses[index].maxNumberOfStudents[numberOfSesion]}'),
+                            TextButton(
+                                onPressed: () {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'Request was sent to the ${courses[index].title} on ${courses[index].dayOfTheWeek[numberOfSesion]} at ${courses[index].startTime[numberOfSesion]}.')));
+                                },
+                                child: const Text('Register this course')),
+                          ],
+                        ),
+                      );
+                    }),
+              ),
             ],
           ),
         ),
