@@ -45,7 +45,7 @@ void getCourses() async {
       }
       else {
         int currentIndex = i - 1;
-        for (int i = currentIndex + 1; i < _courses.length && courses[currentIndex].title != courseTitle; i++) {
+        for (int i = currentIndex + 1; i < _courses.length && courses[currentIndex].title == courseTitle; i++) {
           courseTitle = _courses[i].data()['title'];
           courses[currentIndex].dayOfTheWeek.add(_courses[i].data()['dayOfTheWeek']);
           courses[currentIndex].startTime.add(_courses[i].data()['startTime']);
