@@ -17,9 +17,9 @@ class _RegisterToCourseScreenState extends State<RegisterToCourse> {
 
   @override
   void initState() {
+    super.initState();
     getCourses();
     print(courses.toString());
-    super.initState();
   }
 
   @override
@@ -35,8 +35,6 @@ class _RegisterToCourseScreenState extends State<RegisterToCourse> {
           itemCount: courses.length ,
           itemBuilder: (BuildContext context, int index) {
             CourseDetailsCard courseDetailsCard = CourseDetailsCard(courses[index], index);
-
-            print(index);
             return courseDetailsCard;
           },
         ),
