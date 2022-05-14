@@ -71,13 +71,13 @@ class _CreateCourseState extends State<CreateCourse> {
 
   void addCourse() {
     for (int i = 1; i <= numberOfHours; i++) {
-      firestore.collection("courses").add({
+      firestore.collection("courses").doc('$title${dayOfTheWeek[i - 1]}${startTimes[i - 1].format(context)}').set({
         "tutor": _auth.currentUser?.email,
         "title": title,
         "description": description,
         "maxNumberOfStudents": maxNumberOfStudents,
-        "startTime$i": startTimes[i - 1].format(context),
-        "endTime$i": endTimes[i - 1].format(context),
+        "startTime": startTimes[i - 1].format(context),
+        "endTime": endTimes[i - 1].format(context),
         "dayOfTheWeek": dayOfTheWeek[i-1]
       });
     }
@@ -272,6 +272,7 @@ class _CreateCourseState extends State<CreateCourse> {
     List<String> ddl = [
       "Monday",
       "Tuesday",
+      "Wednesday",
       "Thursday",
       "Friday",
       "Saturday",
