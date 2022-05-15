@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tutor_app/screens/first_screen.dart';
 import 'package:tutor_app/screens/register_screen.dart';
 import 'package:tutor_app/screens/main_screen.dart';
+import 'package:tutor_app/screens/students/students_register_to_course.dart';
 import 'screens/tutors/tutors_main_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/students/students_main_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
           StudentsMainScreen.id: (context) => StudentsMainScreen(),
           TutorsSettings.id: (context) => TutorsSettings(),
           CreateCourse.id: (context) => const CreateCourse(),
+          RegisterToCourse.id: (context) => RegisterToCourse()
         });
   }
 }
