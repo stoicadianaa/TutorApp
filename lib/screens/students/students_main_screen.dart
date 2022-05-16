@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutor_app/screens/students/students_register_to_course.dart';
+import 'student_history_of_courses.dart';
 
 class StudentsMainScreen extends StatefulWidget {
   StudentsMainScreen({this.message, this.appBarMessage});
@@ -48,10 +49,17 @@ class _StudentsMainScreenState extends State<StudentsMainScreen> {
             child: Column(
               children: [
                 TextButton(
-                    onPressed: () async {
+                    onPressed: () {
                       Navigator.pushNamed(context, RegisterToCourse.id);
                     },
-                    child: const Text('Register to a new course'))
+                    child: const Text('Register to a new course')
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, StudentHistory.id);
+                    },
+                    child: const Text('History of the courses')
+                ),
               ],
             ),
           ),
