@@ -10,7 +10,6 @@ class TutorsSettings extends StatefulWidget {
 }
 
 class _TutorsSettingsState extends State<TutorsSettings> {
-  final _auth = FirebaseAuth.instance;
   late User loggedInUser;
 
   @override
@@ -27,12 +26,12 @@ class _TutorsSettingsState extends State<TutorsSettings> {
             child: Column(
               children: [
                 TextButton(
-                    child: Row(
-                      children: const [
-                        Icon(Icons.add),
-                        Text('Create new course'),
-                      ],
-                    ),
+                  child: Row(
+                    children: const [
+                      Icon(Icons.add),
+                      Text('Create new course'),
+                    ],
+                  ),
                   onPressed: () {
                     Navigator.pushNamed(context, CreateCourse.id);
                   },
