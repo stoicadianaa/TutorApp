@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tutor_app/screens/tutors/widgets/Button_widget.dart';
 import 'package:tutor_app/screens/tutors/widgets/Profile_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:io';
@@ -30,6 +32,7 @@ class _TutorProfileState extends State<TutorProfile> {
   initState() {
     super.initState();
     _loadImages();
+    _getRating();
   }
 
   Future<void> _upload(String inputSource) async {
@@ -85,6 +88,17 @@ class _TutorProfileState extends State<TutorProfile> {
     });
   }
 
+  void _getRating() async {
+    var info = await FirebaseFirestore.instance
+        .collection('TutorProfile')
+        .doc('${_auth.currentUser?.email}')
+        .get();
+
+    setState(() {
+      rating = info.data()!['rating'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,11 +124,127 @@ class _TutorProfileState extends State<TutorProfile> {
                     });
                   },
                 ),
+                const SizedBox(height: 24),
+                Padding(
+                  padding:
+                      const EdgeInsets.only(left: 16.0, right: 16.0, top: 10.0),
+                  child: TextFormField(
+                    onChanged: (value) {
+                      name = value;
+                    },
+                    minLines: 1,
+                    maxLines: 2,
+                    decoration: const InputDecoration(
+                        labelText: 'Name', border: OutlineInputBorder()),
+                  ),
+                ),
+                const SizedBox(height: 24),
+                MaterialButton(
+                  padding: const EdgeInsets.symmetric(vertical: 4),
+                  onPressed: () {},
+                  materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        rating.toStringAsFixed(1),
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 24),
+                      ),
+                      const SizedBox(height: 2),
+                      const Text(
+                        'Rating',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Center(child: buildUpgradeButton()),
               ],
             ),
+            // ProfileWidget(
+            //   imagePath: myFile.bucket,
+            //   onClicked: () async {},
+            // ),
+
+            // Expanded(
+            //   child: FutureBuilder(
+            //     future: _loadImages(),
+            //     builder: (context,
+            //         AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+            //       if (snapshot.connectionState == ConnectionState.done) {
+            //         return ListView.builder(
+            //           itemCount: snapshot.data?.length ?? 0,
+            //           itemBuilder: (context, index) {
+            //             final Map<String, dynamic> image = snapshot.data![index];
+            //
+            //             return Column(
+            //               children: [
+            //                 // Card(
+            //                 //   margin: const EdgeInsets.symmetric(vertical: 10),
+            //                 //   child: ListTile(
+            //                 //     dense: false,
+            //                 //     leading: Image.network(image['url']),
+            //                 //     title: Text(image['uploaded_by']),
+            //                 //     subtitle: Text(image['description']),
+            //                 //     trailing: IconButton(
+            //                 //       onPressed: () => _delete(image['path']),
+            //                 //       icon: const Icon(
+            //                 //         Icons.delete,
+            //                 //         color: Colors.red,
+            //                 //       ),
+            //                 //     ),
+            //                 //   ),
+            //                 // ),
+            //                 ProfileWidget(
+            //                   imagePath: image['url'],
+            //                   onClicked: () async {},
+            //                 ),
+            //               ],
+            //             );
+            //           },
+            //         );
+            //       }
+            //
+            //       return const Center(
+            //         child: CircularProgressIndicator(),
+            //       );
+            //     },
+            //   ),
+            // ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceAround,
+            //   children: [
+            //     ElevatedButton.icon(
+            //         onPressed: () => _upload('camera'),
+            //         icon: const Icon(Icons.camera),
+            //         label: const Text('camera')),
+            //     ElevatedButton.icon(
+            //         onPressed: () => _upload('gallery'),
+            //         icon: const Icon(Icons.library_add),
+            //         label: const Text('Gallery')),
+            //   ],
+            // ),
           ],
         ),
       ),
     );
   }
+
+  Widget buildUpgradeButton() => ButtonWidget(
+        text: 'Save profile',
+        onClicked: () async {
+          FirebaseFirestore firestore = FirebaseFirestore.instance;
+          firestore
+              .collection('TutorProfile')
+              .doc('${_auth.currentUser?.email}')
+              .set({
+            'name': name,
+            'email': _auth.currentUser?.email,
+            'rating': rating > 0 ? rating : 0
+          });
+        },
+      );
 }
