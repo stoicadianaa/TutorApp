@@ -53,7 +53,7 @@ class _TutorsMainScreenState extends State<TutorsMainScreen> {
           child: Center(
             child: Column(
               children: [
-                ElevatedButton(
+                TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, TutorProfile.id);
                   },
