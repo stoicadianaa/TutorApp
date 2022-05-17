@@ -66,6 +66,8 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
   final RequestInfo requestInfo;
   _CourseDetailsCardState(this.requestInfo, this.index);
 
+  double rating = 0.0;
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -121,7 +123,9 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
                               color: Colors.orange,
                             )),
                         onRatingUpdate: (value) {
-                          //
+                          setState(() {
+                            rating = value;
+                          });
                         }),
                     const SizedBox(height: 25),
                   ],
