@@ -64,9 +64,32 @@ class CourseDetailsCard extends StatefulWidget {
 class _CourseDetailsCardState extends State<CourseDetailsCard> {
   final int index;
   final RequestInfo requestInfo;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  double rating = 0.0;
+
   _CourseDetailsCardState(this.requestInfo, this.index);
 
-  double rating = 0.0;
+  void getRatingInfo() async {
+    var docRef = FirebaseFirestore.instance.collection('ratings').doc(
+        '${coursesTaken[index].courseName}${_auth.currentUser?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}');
+
+    setState(() {
+      docRef.get().then((doc) async {
+        if (doc.exists) {
+          rating = (await FirebaseFirestore.instance.collection('ratings').doc(
+              '${coursesTaken[index].courseName}${_auth.currentUser
+                  ?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}').get())['rating'];
+        } else {
+          rating = 0.0;
+        }});
+    });
+  }
+
+  @override
+  initState() {
+    getRatingInfo();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +146,11 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
                               color: Colors.orange,
                             )),
                         onRatingUpdate: (value) {
+                          (FirebaseFirestore.instance.collection('ratings').doc(
+                              '${coursesTaken[index].courseName}${_auth.currentUser
+                                  ?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}')).set(
+                              {'rating': value,}
+                          );
                           setState(() {
                             rating = value;
                           });
