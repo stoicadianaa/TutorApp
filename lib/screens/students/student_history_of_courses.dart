@@ -2,6 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'get_students_courses.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+
+List<double> ratingValues = List.filled(coursesTaken.length, 0.0);
 
 class StudentHistory extends StatefulWidget {
   const StudentHistory({Key? key}) : super(key: key);
@@ -13,16 +16,13 @@ class StudentHistory extends StatefulWidget {
 }
 
 class _StudentHistoryState extends State<StudentHistory> {
-
   final _auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
-    if(_auth.currentUser?.email != null) {
-      getCoursesByStudent(_auth.currentUser?.email);
-    }
+    getCoursesByStudent(_auth.currentUser?.email);
   }
 
   @override
@@ -34,22 +34,62 @@ class _StudentHistoryState extends State<StudentHistory> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
-          itemCount: coursesTaken.length ,
+          itemCount: coursesTaken.length,
           itemBuilder: (BuildContext context, int index) {
 
-            CourseDetailsCard courseDetailsCard = CourseDetailsCard(coursesTaken[index], index);
-            return courseDetailsCard;
+            CourseDetailsCard courseDetailsCard =
+            CourseDetailsCard(coursesTaken[index],index);
+            return Column(
+              children: [
+                courseDetailsCard,
+                const SizedBox(height: 25),
+              ],
+            );
           },
         ),
       ),
     );
   }
 }
-class CourseDetailsCard extends StatelessWidget {
+
+class CourseDetailsCard extends StatefulWidget {
   final RequestInfo requestInfo;
   final int index;
 
-  CourseDetailsCard(this.requestInfo,this.index);
+  const CourseDetailsCard(this.requestInfo, this.index);
+
+  @override
+  State<CourseDetailsCard> createState() => _CourseDetailsCardState(requestInfo,index);
+}
+
+class _CourseDetailsCardState extends State<CourseDetailsCard> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  final int index;
+  double rating = 0.0;
+  final RequestInfo requestInfo;
+  _CourseDetailsCardState(this.requestInfo, this.index);
+
+  @override
+  initState() {
+    getRatingInfo();
+    super.initState();
+  }
+
+  void getRatingInfo() async {
+    var docRef = FirebaseFirestore.instance.collection('ratings').doc(
+        '${coursesTaken[index].courseName}${_auth.currentUser?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}');
+    setState(() {
+      docRef.get().then((doc) async {
+        if (doc.exists) {
+          rating = (await FirebaseFirestore.instance.collection('ratings').doc(
+              '${coursesTaken[index].courseName}${_auth.currentUser
+                  ?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}').get())['rating'];
+        } else {
+          rating = 0.0;
+        }});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,13 +108,56 @@ class CourseDetailsCard extends StatelessWidget {
                   style: TextStyle(color: Colors.black.withOpacity(0.6)),
                 ),
               ),
-              Text('description: ${requestInfo.description}',),
-              Text('on ${requestInfo.dayOfTheWeek}s, ${requestInfo.startTime}-${requestInfo.endTime}'),
+              Text(
+                'description: ${requestInfo.description}',
+              ),
+              Text(
+                  'on ${requestInfo.dayOfTheWeek}s, ${requestInfo.startTime}-${requestInfo.endTime}'),
               Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Text(
                   'request status: ${requestInfo.statusRequest}',
                   style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                ),
+              ),
+              Visibility(
+                visible: requestInfo.statusRequest == 'accepted',
+                child: Column(
+                  children: [
+                    const Text(
+                      'Rate this course!',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    const SizedBox(height: 10),
+                    // implement the rating bar
+                    RatingBar(
+                        initialRating: rating,
+                        direction: Axis.horizontal,
+                        allowHalfRating: true,
+                        itemCount: 5,
+                        ratingWidget: RatingWidget(
+                            full: const Icon(Icons.star, color: Colors.orange),
+                            half: const Icon(
+                              Icons.star_half,
+                              color: Colors.orange,
+                            ),
+                            empty: const Icon(
+                              Icons.star_outline,
+                              color: Colors.orange,
+                            )
+                        ),
+                        onRatingUpdate: (value) {
+                          (FirebaseFirestore.instance.collection('ratings').doc(
+                              '${coursesTaken[index].courseName}${_auth.currentUser
+                                  ?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}')).set(
+                              {'rating': value,}
+                          );
+                          setState(() {
+                            rating = value;
+                          });
+                        }),
+                    const SizedBox(height: 25),
+                  ],
                 ),
               ),
             ],
