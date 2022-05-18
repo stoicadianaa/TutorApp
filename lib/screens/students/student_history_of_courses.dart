@@ -65,7 +65,8 @@ class CourseDetailsCard extends StatefulWidget {
 class _CourseDetailsCardState extends State<CourseDetailsCard> {
   final int index;
   final RequestInfo requestInfo;
-  
+  double rating = 0.0;
+
   _CourseDetailsCardState(this.requestInfo, this.index);
   
   @override
@@ -108,7 +109,7 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
                     const SizedBox(height: 10),
                     // implement the rating bar
                     RatingBar(
-                        initialRating: 4.5,
+                        initialRating: rating,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemCount: 5,
@@ -123,6 +124,7 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
                               color: Colors.orange,
                             )),
                         onRatingUpdate: (value) {
+                          rating = value;
                         }),
                     const SizedBox(height: 25),
                   ],
