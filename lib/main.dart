@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
           TutorsSettings.id: (context) => TutorsSettings(),
           CreateCourse.id: (context) => const CreateCourse(),
           RegisterToCourse.id: (context) => RegisterToCourse(),
-          StudentHistory.id: (context) => StudentHistory()
+          StudentHistory.id: (context) => StudentHistory(),
           TutorProfile.id: (context) => TutorProfile(),
        
 
