@@ -63,12 +63,34 @@ class CourseDetailsCard extends StatefulWidget {
 }
 
 class _CourseDetailsCardState extends State<CourseDetailsCard> {
-  final int index;
-  final RequestInfo requestInfo;
-  double rating = 0.0;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  final int index;
+  double rating = 0.0;
+  final RequestInfo requestInfo;
   _CourseDetailsCardState(this.requestInfo, this.index);
-  
+
+  @override
+  initState() {
+    getRatingInfo();
+    super.initState();
+  }
+
+  void getRatingInfo() async {
+    var docRef = FirebaseFirestore.instance.collection('ratings').doc(
+        '${coursesTaken[index].courseName}${_auth.currentUser?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}');
+    setState(() {
+      docRef.get().then((doc) async {
+        if (doc.exists) {
+          rating = (await FirebaseFirestore.instance.collection('ratings').doc(
+              '${coursesTaken[index].courseName}${_auth.currentUser
+                  ?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}').get())['rating'];
+        } else {
+          rating = 0.0;
+        }});
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -122,9 +144,17 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
                             empty: const Icon(
                               Icons.star_outline,
                               color: Colors.orange,
-                            )),
+                            )
+                        ),
                         onRatingUpdate: (value) {
-                          rating = value;
+                          (FirebaseFirestore.instance.collection('ratings').doc(
+                              '${coursesTaken[index].courseName}${_auth.currentUser
+                                  ?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}')).set(
+                              {'rating': value,}
+                          );
+                          setState(() {
+                            rating = value;
+                          });
                         }),
                     const SizedBox(height: 25),
                   ],
