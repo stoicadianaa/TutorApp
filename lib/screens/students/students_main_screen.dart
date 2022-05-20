@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutor_app/screens/students/students_register_to_course.dart';
+import 'get_students_courses.dart';
 import 'student_history_of_courses.dart';
 
 class StudentsMainScreen extends StatefulWidget {
-  StudentsMainScreen({this.message, this.appBarMessage});
-  final appBarMessage;
-  final message;
-  static final id = 'students-main';
+  const StudentsMainScreen();
+  static const id = 'students-main';
 
   @override
   _StudentsMainScreenState createState() => _StudentsMainScreenState();
@@ -16,11 +15,14 @@ class StudentsMainScreen extends StatefulWidget {
 class _StudentsMainScreenState extends State<StudentsMainScreen> {
   final _auth = FirebaseAuth.instance;
   late User loggedInUser;
+  bool showSpinner = false;
+
 
   @override
   void initState() {
     super.initState();
     getCurrentUser();
+    getCoursesByStudent(_auth.currentUser?.email);
   }
 
   void getCurrentUser() {
@@ -55,7 +57,7 @@ class _StudentsMainScreenState extends State<StudentsMainScreen> {
                     child: const Text('Register to a new course')
                 ),
                 TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       Navigator.pushNamed(context, StudentHistory.id);
                     },
                     child: const Text('History of the courses')

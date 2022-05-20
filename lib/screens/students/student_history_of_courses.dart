@@ -16,13 +16,11 @@ class StudentHistory extends StatefulWidget {
 }
 
 class _StudentHistoryState extends State<StudentHistory> {
-  final _auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
-    getCoursesByStudent(_auth.currentUser?.email);
   }
 
   @override
