@@ -34,8 +34,8 @@ void getCoursesByStudent(String? studentEmail) async {
             '${_courses[i]['course-name']}${_courses[i]['dayOfTheWeek']}${_courses[i]['startTime']}')
             .get();
         final info = _myCoursesSnapshots.data();
-          String description = info?['description'];
-          String endTime = info?['endTime'];
+          String description = info?['description'] ?? ' ' ;
+          String endTime = info?['endTime'] ?? ' ';
           print('endtime: $endTime');
           courseToAdd = RequestInfo(
             _courses[i].data()['course-name'],
@@ -51,3 +51,4 @@ void getCoursesByStudent(String? studentEmail) async {
     }
   }
 }
+
