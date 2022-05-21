@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutor_app/screens/tutors/profile_screen.dart';
-import 'package:tutor_app/screens/tutors/tutors_settings.dart';
+import 'package:tutor_app/screens/tutors/tutors_create_course.dart';
 
 class TutorsMainScreen extends StatefulWidget {
-  TutorsMainScreen({this.message, this.appBarMessage});
-  final appBarMessage;
-  final message;
-  static final id = 'tutors-main';
+  static const id = 'tutors-main';
 
   @override
   _TutorsMainScreenState createState() => _TutorsMainScreenState();
@@ -24,28 +21,16 @@ class _TutorsMainScreenState extends State<TutorsMainScreen> {
   }
 
   void getCurrentUser() async {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        //print(loggedInUser.email);
-      }
-    } catch (e) {
-      //print(e);
+    final user = _auth.currentUser;
+    if (user != null) {
+      loggedInUser = user;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Tutor\'s Screen'), actions: [
-        IconButton(
-          icon: Icon(Icons.settings),
-          onPressed: () {
-            Navigator.pushNamed(context, TutorsSettings.id);
-          },
-        )
-      ]),
+      appBar: AppBar(title: const Text('Tutor\'s Screen')),
       body: Container(
         color: Colors.white,
         child: Padding(
@@ -57,7 +42,13 @@ class _TutorsMainScreenState extends State<TutorsMainScreen> {
                   onPressed: () {
                     Navigator.pushNamed(context, TutorProfile.id);
                   },
-                  child: Text('CREATE PROFILE'),
+                  child: const Text('Create a Profile'),
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, CreateCourse.id);
+                  },
+                  child: const Text('Create a Course'),
                 )
               ],
             ),

@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 
 class CreateCourse extends StatefulWidget {
   static const id = 'create-course';
-
   const CreateCourse({Key? key}) : super(key: key);
 
   @override
@@ -185,6 +184,7 @@ class _CreateCourseState extends State<CreateCourse> {
 
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
                     children: [
                       DropdownButton(
                         value: dayOfTheWeek[index].toString(),
@@ -212,7 +212,7 @@ class _CreateCourseState extends State<CreateCourse> {
                             });
                           },
                           style: ElevatedButton.styleFrom(
-                            fixedSize: const Size(100.0, 40.0),
+                            //fixedSize: const Size(100.0, 40.0),
                           )),
                       const SizedBox(width: 10.0),
                       ElevatedButton(
@@ -231,7 +231,7 @@ class _CreateCourseState extends State<CreateCourse> {
                           ),
                         ),
                         style: ElevatedButton.styleFrom(
-                          fixedSize: const Size(100.0, 40.0),
+                          //fixedSize: const Size(100.0, 40.0),
                         ),
                       ),
                     ],
@@ -240,7 +240,6 @@ class _CreateCourseState extends State<CreateCourse> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Material(
-                color: Colors.lightBlueAccent,
                 borderRadius: const BorderRadius.all(Radius.circular(30.0)),
                 elevation: 5.0,
                 child: MaterialButton(

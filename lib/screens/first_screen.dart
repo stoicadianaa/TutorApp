@@ -23,7 +23,6 @@ class _FirstScreenState extends State<FirstScreen> {
                 child: Icon(
                   Icons.backpack_rounded,
                   size: 150.0,
-                  color: Colors.blue,
                 )),
             const SizedBox(
               height: 20.0,
@@ -31,7 +30,6 @@ class _FirstScreenState extends State<FirstScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Material(
-                color: Colors.lightBlueAccent,
                 borderRadius: const BorderRadius.all(Radius.circular(30.0)),
                 elevation: 5.0,
                 child: MaterialButton(
@@ -49,7 +47,6 @@ class _FirstScreenState extends State<FirstScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 16.0),
               child: Material(
-                color: Colors.lightBlueAccent,
                 borderRadius: const BorderRadius.all(Radius.circular(30.0)),
                 elevation: 5.0,
                 child: MaterialButton(

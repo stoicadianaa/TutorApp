@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
 class MyThemes {
-  static final primary = Colors.blue;
-  static final primaryColor = Colors.blue.shade300;
-
   static final darkTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.grey.shade900,
-    primaryColorDark: primaryColor,
-    colorScheme: ColorScheme.dark(primary: primary),
+    scaffoldBackgroundColor: const Color(0xFF221F20),
+    primaryColorDark: const Color(0xFFeec4d8),
+    colorScheme: const ColorScheme.dark(primary: Color(0xFFeec4d8)),
     dividerColor: Colors.white,
   );
 
   static final lightTheme = ThemeData(
-    scaffoldBackgroundColor: Colors.white,
-    primaryColor: primaryColor,
-    colorScheme: ColorScheme.light(primary: primary),
+    scaffoldBackgroundColor: const Color(0xffFCF5F6),
+    primaryColor: const Color(0xFFCE5B78),
+    colorScheme: const ColorScheme.light(primary: Color(0xFFCE5B78)),
     dividerColor: Colors.black,
+    iconTheme: const IconThemeData(
+      color: Color(0xffF39682),
+      opacity: 1.0,
+    ),
   );
 }
