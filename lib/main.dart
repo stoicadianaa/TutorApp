@@ -6,6 +6,7 @@ import 'package:tutor_app/screens/main_screen.dart';
 import 'package:tutor_app/screens/students/student_history_of_courses.dart';
 import 'package:tutor_app/screens/tutors/profile_screen.dart';
 import 'package:tutor_app/screens/students/students_register_to_course.dart';
+import 'package:tutor_app/themes.dart';
 import 'screens/tutors/tutors_main_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/students/students_main_screen.dart';
@@ -26,9 +27,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: MyThemes.lightTheme,
+        darkTheme: MyThemes.darkTheme,
+        themeMode: ThemeMode.light,
         home: const FirstScreen(),
         initialRoute: FirstScreen.id,
         routes: {
@@ -43,8 +44,6 @@ class MyApp extends StatelessWidget {
           RegisterToCourse.id: (context) => RegisterToCourse(),
           StudentHistory.id: (context) => StudentHistory(),
           TutorProfile.id: (context) => TutorProfile(),
-       
-
         });
   }
 }
