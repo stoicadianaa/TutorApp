@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutor_app/auth_info.dart';
 import 'package:tutor_app/screens/tutors/profile_screen.dart';
 import 'package:tutor_app/screens/tutors/tutor_history_of_courses.dart';
@@ -16,32 +15,6 @@ class TutorsMainScreen extends StatefulWidget {
 }
 
 class _TutorsMainScreenState extends State<TutorsMainScreen> {
-  final _auth = FirebaseAuth.instance;
-  late User loggedInUser;
-
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-    listOfRequests = List.filled(
-        0,
-        Requests(
-          ' ',
-          ' ',
-          ' ',
-          ' ',
-          ' ',
-        ),
-        growable: true);
-  }
-
-  void getCurrentUser() async {
-    final user = _auth.currentUser;
-    if (user != null) {
-      loggedInUser = user;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
