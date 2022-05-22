@@ -9,7 +9,7 @@ class Requests {
 List<Requests> listOfRequests =
     List.filled(0, Requests(' ', ' ', ' ', ' ', ' '), growable: true);
 
-void getRequests(String? tutor) async {
+Future<void> getRequests(String? tutor) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   Requests courseToAdd;
   var _myRequestsSnapshots = await firestore
