@@ -12,6 +12,9 @@ List<Requests> listOfRequests =
 Future<void> getRequests(String? tutor) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   Requests courseToAdd;
+  listOfRequests =
+      List.filled(0, Requests(' ', ' ', ' ', ' ', ' '), growable: true);
+
   var _myRequestsSnapshots = await firestore
       .collection('users-courses-requests')
       .where("tutor-email", isEqualTo: tutor)
