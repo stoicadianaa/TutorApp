@@ -32,13 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
       var a = querySnapshot.docs[i];
       print(a.toString());
       if (a["email"] == email) {
-        userType =
-          a["user-type"] != null ? a["user-type"].toString() : 'none';
+        userType = a["user-type"] != null ? a["user-type"].toString() : 'none';
         print("usertype: $userType");
         return;
       }
     }
-    print('no such email');
   }
 
   @override
@@ -125,10 +123,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           if (userType == 'teacher') {
                             print('to teacher');
                             Navigator.pushNamed(context, TutorsMainScreen.id);
-                          } else if (userType == 'student'){
+                          } else if (userType == 'student') {
                             Navigator.pushNamed(context, StudentsMainScreen.id);
-                          }
-                          else {
+                          } else {
                             print('error');
                           }
                         } on FirebaseAuthException catch (e) {
