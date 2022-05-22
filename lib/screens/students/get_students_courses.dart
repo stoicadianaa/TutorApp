@@ -11,10 +11,15 @@ List<RequestInfo> coursesTaken = List.filled(
     RequestInfo(' ', ' ', ' ', ' ', ' ', ' ', ' '),
     growable: true);
 
-void getCoursesByStudent(String? studentEmail) async {
+Future<void> getCoursesByStudent(String? studentEmail) async {
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  if (coursesTaken.isEmpty) {
+  coursesTaken = List.filled(
+      0,
+      RequestInfo(' ', ' ', ' ', ' ', ' ', ' ', ' '),
+      growable: true);
+
+
     RequestInfo courseToAdd;
     var _myCoursesSnapshots = await firestore
         .collection('users-courses-requests')
@@ -23,8 +28,6 @@ void getCoursesByStudent(String? studentEmail) async {
     final _courses = _myCoursesSnapshots.docs;
 
     print(_courses.length);
-
-    if (_courses.isNotEmpty) {
 
       int i;
       for (i = 0; i < _courses.length; i++) {
@@ -47,8 +50,6 @@ void getCoursesByStudent(String? studentEmail) async {
             _courses[i].data()['status-request'],
           );
           coursesTaken.add(courseToAdd);
-      }
     }
-  }
 }
 
