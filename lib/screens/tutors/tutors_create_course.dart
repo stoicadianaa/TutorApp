@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
+import 'package:tutor_app/auth_info.dart';
 
 class CreateCourse extends StatefulWidget {
   static const id = 'create-course';
@@ -12,9 +12,7 @@ class CreateCourse extends StatefulWidget {
 }
 
 class _CreateCourseState extends State<CreateCourse> {
-  final _auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  late User loggedInUser;
   String description = "", title = "";
   int maxNumberOfStudents = -1, numberOfHours = -1;
   final TimeOfDay _time = const TimeOfDay(hour: 0, minute: 00);
@@ -40,8 +38,6 @@ class _CreateCourseState extends State<CreateCourse> {
     QuerySnapshot _myDoc =
     await firestore.collection('courses').where('title',isEqualTo: title).get();
     List<DocumentSnapshot> _myDocCount = _myDoc.docs;
-
-    print(_myDocCount);
 
     if (_myDocCount.isNotEmpty) {
       return 'The name of this course is used already. Please choose another one.';
@@ -71,7 +67,7 @@ class _CreateCourseState extends State<CreateCourse> {
   void addCourse() {
     for (int i = 1; i <= numberOfHours; i++) {
       firestore.collection("courses").doc('$title${dayOfTheWeek[i - 1]}${startTimes[i - 1].format(context)}').set({
-        "tutor": _auth.currentUser?.email,
+        "tutor": authEmail,
         "title": title,
         "description": description,
         "maxNumberOfStudents": maxNumberOfStudents,
