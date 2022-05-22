@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tutor_app/auth_info.dart';
 import 'package:tutor_app/screens/students/students_register_to_course.dart';
 import '../../course.dart';
+import 'get_students_courses.dart';
 import 'student_history_of_courses.dart';
 
 class StudentsMainScreen extends StatefulWidget {
@@ -34,6 +36,7 @@ class _StudentsMainScreenState extends State<StudentsMainScreen> {
                 ),
                 TextButton(
                     onPressed: () async {
+                      await getCoursesByStudent(authEmail);
                       Navigator.pushNamed(context, StudentHistory.id);
                     },
                     child: const Text('History of the courses')
