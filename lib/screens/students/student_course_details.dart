@@ -22,10 +22,6 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
   _StudentsCourseDetailsState(this.index);
 
   void addStudentToCourse(int numberOfSession) async {
-    print(firestore.collection('users-courses-requests')
-        .where('course-name', isEqualTo: courses[index].title)
-        .where('user-email', isEqualTo: authEmail));
-
     QuerySnapshot _myDoc = await firestore.collection('users-courses-requests')
         .where('course-name', isEqualTo: courses[index].title)
         .where('user-email', isEqualTo: authEmail)

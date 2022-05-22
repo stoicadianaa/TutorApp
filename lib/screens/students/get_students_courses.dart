@@ -39,7 +39,6 @@ Future<void> getCoursesByStudent(String? studentEmail) async {
         final info = _myCoursesSnapshots.data();
           String description = info?['description'] ?? ' ' ;
           String endTime = info?['endTime'] ?? ' ';
-          print('endtime: $endTime');
           courseToAdd = RequestInfo(
             _courses[i].data()['course-name'],
             description,
