@@ -25,8 +25,6 @@ Future<void> getCourses() async {
         await firestore.collection('courses').orderBy('title').get();
     final _courses = _myCoursesSnapshots.docs;
 
-    print(_myCoursesSnapshots.toString());
-
     String courseTitle;
 
     courseToAdd = Course(
