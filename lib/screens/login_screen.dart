@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tutor_app/screens/students/students_main_screen.dart';
 import 'package:tutor_app/screens/tutors/tutors_main_screen.dart';
+import 'package:tutor_app/screens/tutors/get_tutor_courses.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -18,6 +19,15 @@ class _LoginScreenState extends State<LoginScreen> {
   late String password;
   final firestore = FirebaseFirestore.instance;
   String userType = 'null';
+
+  @override
+  initState() {
+    TutorsCourses = List.filled(
+        0,
+        TutorsCourseInfo(
+            ' ', ' ', ' ', ' ', ' ', 0, List.filled(0, '', growable: true)),
+        growable: true);
+  }
 
   SnackBar errorSnackbar(String error) {
     return SnackBar(
@@ -37,6 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
         return;
       }
     }
+    print('no such email');
   }
 
   @override
