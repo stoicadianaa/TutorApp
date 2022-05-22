@@ -19,7 +19,6 @@ class _RegisterToCourseScreenState extends State<RegisterToCourse> {
   void initState() {
     super.initState();
     getCourses();
-    print(courses.toString());
   }
 
   @override
