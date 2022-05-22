@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tutor_app/auth_info.dart';
 
 import 'package:tutor_app/course.dart';
 
@@ -19,17 +19,16 @@ class StudentsCourseDetails extends StatefulWidget {
 class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
   int index;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
-  final _auth = FirebaseAuth.instance;
   _StudentsCourseDetailsState(this.index);
 
   void addStudentToCourse(int numberOfSession) async {
     print(firestore.collection('users-courses-requests')
         .where('course-name', isEqualTo: courses[index].title)
-        .where('user-email', isEqualTo: _auth.currentUser?.email));
+        .where('user-email', isEqualTo: authEmail));
 
     QuerySnapshot _myDoc = await firestore.collection('users-courses-requests')
         .where('course-name', isEqualTo: courses[index].title)
-        .where('user-email', isEqualTo: _auth.currentUser?.email)
+        .where('user-email', isEqualTo: authEmail)
         .where('dayOfTheWeek', isEqualTo: courses[index].dayOfTheWeek[numberOfSession])
         .where('startTime', isEqualTo: courses[index].startTime[numberOfSession]).get();
     List<DocumentSnapshot> _myDocCount = _myDoc.docs;
@@ -49,7 +48,7 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
     }
 
     firestore.collection('users-courses-requests').add({
-      'user-email': _auth.currentUser?.email,
+      'user-email': authEmail,
       'tutor-email': courses[index].tutor,
       'course-name': courses[index].title,
       'dayOfTheWeek': courses[index].dayOfTheWeek[numberOfSession],
