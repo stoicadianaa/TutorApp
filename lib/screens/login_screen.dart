@@ -31,14 +31,13 @@ class _LoginScreenState extends State<LoginScreen> {
     QuerySnapshot querySnapshot = await firestore.collection("users").get();
     for (int i = 0; i < querySnapshot.docs.length; i++) {
       var a = querySnapshot.docs[i];
-      print(a.toString());
+
       if (a["email"] == email) {
         userType = a["user-type"] != null ? a["user-type"].toString() : 'none';
-        print("usertype: $userType");
+
         return;
       }
     }
-    print('no such email');
   }
 
   @override
@@ -122,14 +121,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: () async {
                         try {
                           await findUserType();
-                          print("in button: $userType");
+
                           if (userType == 'teacher') {
-                            print('to teacher');
                             Navigator.pushNamed(context, TutorsMainScreen.id);
                           } else if (userType == 'student') {
                             Navigator.pushNamed(context, StudentsMainScreen.id);
-                          } else {
-                            print('error');
                           }
                         } on FirebaseAuthException catch (e) {
                           ScaffoldMessenger.of(context)
