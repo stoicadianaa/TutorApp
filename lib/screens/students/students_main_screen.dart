@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutor_app/screens/students/students_register_to_course.dart';
-import 'get_students_courses.dart';
+import '../../course.dart';
 import 'student_history_of_courses.dart';
 
 class StudentsMainScreen extends StatefulWidget {
@@ -13,30 +12,6 @@ class StudentsMainScreen extends StatefulWidget {
 }
 
 class _StudentsMainScreenState extends State<StudentsMainScreen> {
-  final _auth = FirebaseAuth.instance;
-  late User loggedInUser;
-  bool showSpinner = false;
-
-
-  @override
-  void initState() {
-    super.initState();
-    getCurrentUser();
-    getCoursesByStudent(_auth.currentUser?.email);
-  }
-
-  void getCurrentUser() {
-    try {
-      final user = _auth.currentUser;
-      if (user != null) {
-        loggedInUser = user;
-        //print(loggedInUser.email);
-      }
-    } catch (e) {
-      //print(e);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +26,8 @@ class _StudentsMainScreenState extends State<StudentsMainScreen> {
             child: Column(
               children: [
                 TextButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      await getCourses();
                       Navigator.pushNamed(context, RegisterToCourse.id);
                     },
                     child: const Text('Register to a new course')
