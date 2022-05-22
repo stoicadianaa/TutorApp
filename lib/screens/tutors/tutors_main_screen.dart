@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tutor_app/screens/tutors/profile_screen.dart';
 import 'package:tutor_app/screens/tutors/tutor_history_of_courses.dart';
+import 'package:tutor_app/screens/tutors/tutor_requests.dart';
 import 'package:tutor_app/screens/tutors/tutors_create_course.dart';
 import 'get_tutor_courses.dart';
 
@@ -61,7 +62,7 @@ class _TutorsMainScreenState extends State<TutorsMainScreen> {
                 ),
                 TextButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, TutorHistory.id);
+                    Navigator.pushNamed(context, TutorRequests.id);
                   },
                   child: const Text('Course\'s Requests'),
                 )

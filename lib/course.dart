@@ -17,7 +17,7 @@ List<Course> courses = List.filled(
         List<String>.empty(), List<int>.empty()),
     growable: true);
 //Course courseToAdd = Course('Not initialized', ' ',' ', List<String>.empty(),List<String>.empty(), List<String>.empty(), List<int>.empty());
-void getCourses() async {
+Future<void> getCourses() async {
   if (courses.isEmpty) {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     Course courseToAdd;
