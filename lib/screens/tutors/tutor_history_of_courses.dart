@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'get_tutor_courses.dart';
 
@@ -13,15 +12,12 @@ class TutorHistory extends StatefulWidget {
 }
 
 class _TutorHistoryState extends State<TutorHistory> {
-  final _auth = FirebaseAuth.instance;
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   @override
   void initState() {
     super.initState();
-    if (_auth.currentUser?.email != null) {
-      getCoursesByTutor(_auth.currentUser?.email);
-    }
   }
 
   @override
@@ -36,7 +32,6 @@ class _TutorHistoryState extends State<TutorHistory> {
           itemCount: TutorsCourses.length,
           itemBuilder: (BuildContext context, int index) {
             String students = '';
-            print("students: ${TutorsCourses[index].acceptedStudents.length}");
             for (int i = 0;
                 i < TutorsCourses[index].acceptedStudents.length;
                 i++) {
@@ -60,7 +55,7 @@ class CourseDetailsCard extends StatelessWidget {
   final int index;
   final String students;
 
-  CourseDetailsCard(this.requestInfo, this.students, this.index);
+  const CourseDetailsCard(this.requestInfo, this.students, this.index);
 
   @override
   Widget build(BuildContext context) {
