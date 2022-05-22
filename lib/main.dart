@@ -11,7 +11,6 @@ import 'package:tutor_app/themes.dart';
 import 'screens/tutors/tutors_main_screen.dart';
 import 'screens/login_screen.dart';
 import 'screens/students/students_main_screen.dart';
-import 'package:tutor_app/screens/tutors/tutors_settings.dart';
 import 'screens/tutors/tutors_create_course.dart';
 
 void main() async {
@@ -34,18 +33,17 @@ class MyApp extends StatelessWidget {
         home: const FirstScreen(),
         initialRoute: FirstScreen.id,
         routes: {
-          FirstScreen.id: (context) => FirstScreen(),
-          RegisterScreen.id: (context) => RegisterScreen(),
-          LoginScreen.id: (context) => LoginScreen(),
+          FirstScreen.id: (context) => const FirstScreen(),
+          RegisterScreen.id: (context) => const RegisterScreen(),
+          LoginScreen.id: (context) => const LoginScreen(),
           TutorsMainScreen.id: (context) => TutorsMainScreen(),
-          StudentsMainScreen.id: (context) => StudentsMainScreen(),
-          TutorsSettings.id: (context) => TutorsSettings(),
+          StudentsMainScreen.id: (context) => const StudentsMainScreen(),
           CreateCourse.id: (context) => const CreateCourse(),
-          RegisterToCourse.id: (context) => RegisterToCourse(),
-          StudentHistory.id: (context) => StudentHistory(),
-          TutorProfile.id: (context) => TutorProfile(),
-          TutorHistory.id: (context) => TutorHistory(),
-          TutorRequests.id: (context) => TutorRequests(),
+          RegisterToCourse.id: (context) => const RegisterToCourse(),
+          StudentHistory.id: (context) => const StudentHistory(),
+          TutorProfile.id: (context) => const TutorProfile(),
+          TutorHistory.id: (context) => const TutorHistory(),
+          TutorRequests.id: (context) => const TutorRequests(),
         });
   }
 }
