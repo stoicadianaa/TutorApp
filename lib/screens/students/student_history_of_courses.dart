@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tutor_app/auth_info.dart';
 import 'get_students_courses.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -61,8 +61,6 @@ class CourseDetailsCard extends StatefulWidget {
 }
 
 class _CourseDetailsCardState extends State<CourseDetailsCard> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
   final int index;
   double rating = 0.0;
   final RequestInfo requestInfo;
@@ -76,15 +74,23 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
 
   void getRatingInfo() async {
     var docRef = FirebaseFirestore.instance.collection('ratings').doc(
-        '${coursesTaken[index].courseName}${_auth.currentUser?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}');
+        '${coursesTaken[index].courseName}$authEmail${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}');
     setState(() {
       docRef.get().then((doc) async {
         if (doc.exists) {
           rating = (await FirebaseFirestore.instance.collection('ratings').doc(
-              '${coursesTaken[index].courseName}${_auth.currentUser
-                  ?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}').get())['rating'];
+              '${coursesTaken[index].courseName}$authEmail${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}').get())['rating'];
         } else {
-          rating = 0.0;
+          await FirebaseFirestore.instance.collection('ratings').doc(
+              '${coursesTaken[index].courseName}$authEmail${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}').set(
+              {'tutor': requestInfo.tutorEmail,
+                'course': requestInfo.courseName,
+                'dayOfTheWeek': coursesTaken[index].dayOfTheWeek,
+                'startTime' : coursesTaken[index].startTime,
+                'student': authEmail,
+                'rating': 0.0
+              }
+          );
         }});
     });
   }
@@ -146,8 +152,7 @@ class _CourseDetailsCardState extends State<CourseDetailsCard> {
                         ),
                         onRatingUpdate: (value) {
                           (FirebaseFirestore.instance.collection('ratings').doc(
-                              '${coursesTaken[index].courseName}${_auth.currentUser
-                                  ?.email}${coursesTaken[index].dayOfTheWeek}${coursesTaken[index].startTime}')).set(
+                              '${requestInfo.courseName}${authEmail}${requestInfo.dayOfTheWeek}${requestInfo.startTime}')).update(
                               {'rating': value,}
                           );
                           setState(() {
