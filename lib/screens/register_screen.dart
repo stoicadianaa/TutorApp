@@ -3,6 +3,8 @@ import 'package:tutor_app/screens/main_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'main_screen.dart';
+import 'package:tutor_app/screens/students/students_main_screen.dart';
+import 'package:tutor_app/screens/tutors/tutors_main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -28,10 +30,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   }
 
   void addUser() {
-    firestore.collection("users").add({
-      "email":email,
-      "user-type":userType
-    }).then((value) => print(value.id));
+    firestore.collection("users").add({"email": email, "user-type": userType});
   }
 
   @override
@@ -54,7 +53,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     child: Icon(
                       Icons.backpack_rounded,
                       size: 150.0,
-                      color: Colors.blue,
                     )),
                 const SizedBox(
                   height: 20.0,
@@ -73,13 +71,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(32.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.lightBlueAccent, width: 1.0),
                       borderRadius: BorderRadius.all(Radius.circular(32.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.lightBlueAccent, width: 2.0),
                       borderRadius: BorderRadius.all(Radius.circular(32.0)),
                     ),
                   ),
@@ -101,13 +95,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(32.0)),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.lightBlueAccent, width: 1.0),
                       borderRadius: BorderRadius.all(Radius.circular(32.0)),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: Colors.lightBlueAccent, width: 2.0),
                       borderRadius: BorderRadius.all(Radius.circular(32.0)),
                     ),
                   ),
@@ -146,7 +136,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Material(
-                    color: Colors.lightBlueAccent,
                     borderRadius: const BorderRadius.all(Radius.circular(30.0)),
                     elevation: 5.0,
                     child: MaterialButton(
@@ -162,8 +151,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 MaterialPageRoute(
                                     builder: (context) => MainScreen(
                                         message: 'User $email registered!',
-                                        appBarMessage: 'Register')
-                                ));
+                                        appBarMessage: 'Register')));
+                          }
+                          if (userType == 'teacher') {
+                            Navigator.pushNamed(context, TutorsMainScreen.id);
+                          } else if (userType == 'student') {
+                            Navigator.pushNamed(context, StudentsMainScreen.id);
+                          } else {
+                            print('error');
                           }
                         } on FirebaseAuthException catch (e) {
                           ScaffoldMessenger.of(context)
