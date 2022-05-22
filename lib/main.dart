@@ -2,7 +2,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:tutor_app/screens/first_screen.dart';
 import 'package:tutor_app/screens/register_screen.dart';
-import 'package:tutor_app/screens/main_screen.dart';
 import 'package:tutor_app/screens/students/student_history_of_courses.dart';
 import 'package:tutor_app/screens/tutors/profile_screen.dart';
 import 'package:tutor_app/screens/students/students_register_to_course.dart';
@@ -38,7 +37,6 @@ class MyApp extends StatelessWidget {
           FirstScreen.id: (context) => FirstScreen(),
           RegisterScreen.id: (context) => RegisterScreen(),
           LoginScreen.id: (context) => LoginScreen(),
-          MainScreen.id: (context) => MainScreen(),
           TutorsMainScreen.id: (context) => TutorsMainScreen(),
           StudentsMainScreen.id: (context) => StudentsMainScreen(),
           TutorsSettings.id: (context) => TutorsSettings(),
