@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:tutor_app/screens/main_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'main_screen.dart';
+import 'package:tutor_app/auth_info.dart';
 import 'package:tutor_app/screens/students/students_main_screen.dart';
 import 'package:tutor_app/screens/tutors/tutors_main_screen.dart';
 
@@ -16,7 +15,6 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final _auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
   late String email;
   late String password;
@@ -62,6 +60,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   keyboardType: TextInputType.emailAddress,
                   onChanged: (value) {
                     email = value;
+                    authEmail = value;
                   },
                   decoration: const InputDecoration(
                     hintText: 'Enter your email',
@@ -142,23 +141,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onPressed: () async {
                         try {
                           addUser();
-                          final newUser =
-                              await _auth.createUserWithEmailAndPassword(
-                                  email: email, password: password);
-                          if (newUser != null) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MainScreen(
-                                        message: 'User $email registered!',
-                                        appBarMessage: 'Register')));
-                          }
                           if (userType == 'teacher') {
                             Navigator.pushNamed(context, TutorsMainScreen.id);
                           } else if (userType == 'student') {
                             Navigator.pushNamed(context, StudentsMainScreen.id);
-                          } else {
-                            print('error');
                           }
                         } on FirebaseAuthException catch (e) {
                           ScaffoldMessenger.of(context)
