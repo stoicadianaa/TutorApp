@@ -32,18 +32,20 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
     if(_myDocCount.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('The student already sent a request for this sesion.')));
+              content: Text('The student already sent a request for this session.')));
       return;
     }
 
     if(courses[index].maxNumberOfStudents[numberOfSession] == 0){
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('There is no space left in this sesion.')));
+              content: Text('There is no space left in this session.')));
       return;
     }
 
-    firestore.collection('users-courses-requests').add({
+    firestore.collection('users-courses-requests').doc('$authEmail${courses[index].title}'
+        '${courses[index].dayOfTheWeek[numberOfSession]}'
+        '${courses[index].startTime[numberOfSession]}').set({
       'user-email': authEmail,
       'tutor-email': courses[index].tutor,
       'course-name': courses[index].title,
@@ -52,27 +54,10 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
       'status-request': 'pending'
     });
 
-    updateNumberOfStudents(numberOfSession);
-
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(
                 'Request was sent to the ${courses[index].title} on ${courses[index].dayOfTheWeek[numberOfSession]} at ${courses[index].startTime[numberOfSession]}.')));
-  }
-
-  void updateNumberOfStudents(int numberOfSession) {
-    setState(() {
-      courses[index].maxNumberOfStudents[numberOfSession]--;
-    });
-
-    firestore.collection('courses').doc('${courses[index].title}${courses[index].dayOfTheWeek[numberOfSession]}${courses[index].startTime[numberOfSession]}')
-              .update({'maxNumberOfStudents': courses[index].maxNumberOfStudents[numberOfSession]});
-
-
-    firestore.collection("courses")
-        .where('course-name', isEqualTo: courses[index].title)
-        .where('dayOfTheWeek', isEqualTo: courses[index].dayOfTheWeek[numberOfSession])
-        .where('startTime', isEqualTo: courses[index].startTime[numberOfSession]);
   }
 
   @override
@@ -115,7 +100,7 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
                 height: 10.0,
               ),
               const Text(
-                'Available sesions:',
+                'Available sessions:',
                 style: TextStyle(
                   fontSize: 16.0,
                 ),

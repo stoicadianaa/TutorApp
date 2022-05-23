@@ -40,23 +40,17 @@ class _TutorRequestsState extends State<TutorRequests> {
   }
 }
 
-// void updateNumberOfStudents(int numberOfSession) {
-//   FirebaseFirestore.instance.collection('courses').doc('${courses[index].title}${courses[index].dayOfTheWeek[numberOfSession]}${courses[index].startTime[numberOfSession]}')
-//       .update({'maxNumberOfStudents': courses[index].maxNumberOfStudents[numberOfSession]});
-//
-//
-//   FirebaseFirestore.instance.collection("courses")
-//       .where('course-name', isEqualTo: courses[index].title)
-//       .where('dayOfTheWeek', isEqualTo: courses[index].dayOfTheWeek[numberOfSession])
-//       .where('startTime', isEqualTo: courses[index].startTime[numberOfSession]);
-// }
-
 class CourseDetailsCard extends StatefulWidget {
   final Requests requestInfo;
   final int index;
 
   CourseDetailsCard(this.requestInfo, this.index, {Key? key}) : super(key: key);
 
+  @override
+  State<CourseDetailsCard> createState() => _CourseDetailsCardState();
+}
+
+class _CourseDetailsCardState extends State<CourseDetailsCard> {
   @override
   State<CourseDetailsCard> createState() => _CourseDetailsCardState();
 }
