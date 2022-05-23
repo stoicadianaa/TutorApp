@@ -32,14 +32,14 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
     if(_myDocCount.isNotEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('The student already sent a request for this sesion.')));
+              content: Text('The student already sent a request for this session.')));
       return;
     }
 
     if(courses[index].maxNumberOfStudents[numberOfSession] == 0){
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-              content: Text('There is no space left in this sesion.')));
+              content: Text('There is no space left in this session.')));
       return;
     }
 
@@ -100,7 +100,7 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
                 height: 10.0,
               ),
               const Text(
-                'Available sesions:',
+                'Available sessions:',
                 style: TextStyle(
                   fontSize: 16.0,
                 ),
