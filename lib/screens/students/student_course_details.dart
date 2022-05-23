@@ -43,7 +43,9 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
       return;
     }
 
-    firestore.collection('users-courses-requests').add({
+    firestore.collection('users-courses-requests').doc('$authEmail${courses[index].title}'
+        '${courses[index].dayOfTheWeek[numberOfSession]}'
+        '${courses[index].startTime[numberOfSession]}').set({
       'user-email': authEmail,
       'tutor-email': courses[index].tutor,
       'course-name': courses[index].title,
@@ -52,27 +54,10 @@ class _StudentsCourseDetailsState extends State<StudentsCourseDetails> {
       'status-request': 'pending'
     });
 
-    updateNumberOfStudents(numberOfSession);
-
     ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
             content: Text(
                 'Request was sent to the ${courses[index].title} on ${courses[index].dayOfTheWeek[numberOfSession]} at ${courses[index].startTime[numberOfSession]}.')));
-  }
-
-  void updateNumberOfStudents(int numberOfSession) {
-    setState(() {
-      courses[index].maxNumberOfStudents[numberOfSession]--;
-    });
-
-    firestore.collection('courses').doc('${courses[index].title}${courses[index].dayOfTheWeek[numberOfSession]}${courses[index].startTime[numberOfSession]}')
-              .update({'maxNumberOfStudents': courses[index].maxNumberOfStudents[numberOfSession]});
-
-
-    firestore.collection("courses")
-        .where('course-name', isEqualTo: courses[index].title)
-        .where('dayOfTheWeek', isEqualTo: courses[index].dayOfTheWeek[numberOfSession])
-        .where('startTime', isEqualTo: courses[index].startTime[numberOfSession]);
   }
 
   @override

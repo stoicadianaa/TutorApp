@@ -40,58 +40,88 @@ class _TutorRequestsState extends State<TutorRequests> {
   }
 }
 
-class CourseDetailsCard extends StatelessWidget {
+// void updateNumberOfStudents(int numberOfSession) {
+//   FirebaseFirestore.instance.collection('courses').doc('${courses[index].title}${courses[index].dayOfTheWeek[numberOfSession]}${courses[index].startTime[numberOfSession]}')
+//       .update({'maxNumberOfStudents': courses[index].maxNumberOfStudents[numberOfSession]});
+//
+//
+//   FirebaseFirestore.instance.collection("courses")
+//       .where('course-name', isEqualTo: courses[index].title)
+//       .where('dayOfTheWeek', isEqualTo: courses[index].dayOfTheWeek[numberOfSession])
+//       .where('startTime', isEqualTo: courses[index].startTime[numberOfSession]);
+// }
+
+class CourseDetailsCard extends StatefulWidget {
   final Requests requestInfo;
   final int index;
 
   CourseDetailsCard(this.requestInfo, this.index);
 
   @override
+  State<CourseDetailsCard> createState() => _CourseDetailsCardState();
+}
+
+class _CourseDetailsCardState extends State<CourseDetailsCard> {
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(6.0),
-      child: Card(
-        clipBehavior: Clip.antiAlias,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              ListTile(
-                  title: Text(requestInfo.title),
-                  subtitle: Text(
-                      'on ${requestInfo.dayOfTheWeek}s, ${requestInfo.startTime}')),
-              Column(
-                children: [
-                  Text(
-                    'student: ${requestInfo.student}',
-                    style: TextStyle(color: Colors.black.withOpacity(0.6)),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      TextButton(
-                          onPressed: () {
-                            FirebaseFirestore.instance
-                                .collection('users-courses-requests')
-                                .doc(
-                                    '${requestInfo.student}${requestInfo.title}${requestInfo.dayOfTheWeek}${requestInfo.startTime}')
-                                .set({'status-request': 'accepted'});
-                          },
-                          child: Text('Accept')),
-                      TextButton(
-                          onPressed: () {
-                            FirebaseFirestore.instance
-                                .collection('users-courses-requests')
-                                .doc(
-                                    '${requestInfo.student}${requestInfo.title}${requestInfo.dayOfTheWeek}${requestInfo.startTime}')
-                                .set({'status-request': 'declined'});
-                          },
-                          child: Text('Reject')),
-                    ],
-                  )
-                ],
-              )
-            ],
+    return Visibility(
+      visible: widget.requestInfo.currentStatus == 'pending',
+      child: Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: Card(
+          clipBehavior: Clip.antiAlias,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                ListTile(
+                    title: Text(widget.requestInfo.title),
+                    subtitle: Text(
+                        'on ${widget.requestInfo.dayOfTheWeek}s, ${widget.requestInfo.startTime}')),
+                Column(
+                  children: [
+                    Text(
+                      'student: ${widget.requestInfo.student}',
+                      style: TextStyle(color: Colors.black.withOpacity(0.6)),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                            onPressed: () {
+                              FirebaseFirestore.instance
+                                  .collection('users-courses-requests')
+                                  .doc(
+                                      '${widget.requestInfo.student}${widget.requestInfo.title}${widget.requestInfo.dayOfTheWeek}${widget.requestInfo.startTime}')
+                                  .update({'status-request': 'accepted'});
+                              setState(() {
+                                widget.requestInfo.currentStatus = 'accepted';
+                              });
+                            },
+                            child: Text('Accept')),
+                        TextButton(
+                            onPressed: () {
+                              FirebaseFirestore.instance.collection('courses')
+                              .doc('${widget.requestInfo.title}${widget.requestInfo.dayOfTheWeek}${widget.requestInfo.startTime}').update(
+                                  {
+                                'maxNumberOfStudents': FieldValue.increment(1)
+                              });
+                              FirebaseFirestore.instance
+                                  .collection('users-courses-requests')
+                                  .doc(
+                                      '${widget.requestInfo.student}${widget.requestInfo.title}${widget.requestInfo.dayOfTheWeek}${widget.requestInfo.startTime}')
+                                  .update({'status-request': 'declined'});
+                              setState(() {
+                                widget.requestInfo.currentStatus = 'declined';
+                              });
+                            },
+                            child: Text('Reject')),
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
