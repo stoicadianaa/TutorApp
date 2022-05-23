@@ -39,3 +39,17 @@ lessons, and they will receive a response to their request(the response can be a
 specifying a rejection reason)
 • They can rate the tutors’ performance(the rating goes from 1 to 5 stars)
 • They can have a subject history (you can see the courses in which he has participated in the past)
+
+## Runing instructions
+After you open AndroidStudio, clone the project from Github and open the terminal, then get your dependencies from the pubspec.yaml file using the coomand "flutter pub get".
+
+![image](https://user-images.githubusercontent.com/61829961/169794975-c35dfdab-6117-4fcc-92ae-ba813b963246.png)
+
+
+
+Then you can run the command "flutter run", and the app will start running.
+
+
+
+![image](https://user-images.githubusercontent.com/61829961/169794364-a7015f85-f93c-49a4-92e5-8d97af0321ce.png)
+
